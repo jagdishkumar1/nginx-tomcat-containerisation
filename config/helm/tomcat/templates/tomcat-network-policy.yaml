@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: tomcat-network-policy
+  namespace: {{ index .Values.global.clusterNamespace .Values.global.env }}
+spec:
+  podSelector:
+    matchLabels:
+         app: tomcat
+

@@ -1,0 +1,17 @@
+FROM nginx:alpine
+
+MAINTAINER Jagdish Kumar
+
+RUN apk update \
+    && apk add unzip
+
+COPY ssl.conf /etc/nginx/conf.d/ssl.conf
+COPY ca.pem /etc/nginx/ssl/ca.pem
+COPY key.pem /etc/nginx/ssl/key.pem
+COPY cert.pem /etc/nginx/ssl/cert.pem
+
+ADD static_files.zip /usr/share/nginx/html/
+RUN unzip /usr/share/nginx/html/static_files.zip -d /usr/share/nginx/html/
+
+EXPOSE 443
+

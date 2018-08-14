@@ -1,0 +1,29 @@
+---
+global:
+  # env refers to the environment properties belong to during build-time. Default is "development".
+  env: development
+  name: nginx
+  tag: v1
+  certificateSecretMountPath: /etc/nginx/ssl
+  sslCertPath: /etc/nginx/ssl/tls_cert
+  sslKeyPath: /etc/nginx/ssl/tls_key
+  logLevel:
+    development: DEBUG
+    pre_production: DEBUG
+    production: info
+  registryHostName: 
+    development: registry.dev.net
+    pre_production: registry.perprod.net
+    production: registry.prod.net
+  imageName: 
+    development: nginx
+    pre_production: nginx
+    production:
+  registryNamespace:
+    development: dev
+    pre_production: preprod
+    production: prod
+  clusterNamespace:
+    development: test-dev
+    pre_production: test-preprod
+    production: test-prod

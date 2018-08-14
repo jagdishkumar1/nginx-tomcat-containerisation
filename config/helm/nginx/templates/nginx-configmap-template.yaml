@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+  namespace: {{ index .Values.global.clusterNamespace .Values.global.env }}
+data:
+  # Evironment
+ logLevel: {{ index .Values.global.logLevel .Values.global.env | quote }}
+
+ certificateSecretMountPath: {{ .Values.global.certificateSecretMountPath | quote }}
+
+ sslCertPath: {{ .Values.global.sslCertPath | quote }}
+
+ sslKeyPath: {{ .Values.global.sslKeyPath | quote }}

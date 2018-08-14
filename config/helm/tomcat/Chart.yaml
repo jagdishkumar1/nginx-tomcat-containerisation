@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+name: tomcat
+description: This chart manages the tomcat micro-service.
+version: 0.0.1
+appVersion: 0.0.1
+icon: 

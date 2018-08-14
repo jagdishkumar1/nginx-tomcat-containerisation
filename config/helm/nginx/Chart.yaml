@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+name: nginx
+description: This chart manages the nginx micro-service.
+version: 0.0.1
+appVersion: 0.0.1
+icon: 

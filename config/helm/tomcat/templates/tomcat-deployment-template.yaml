@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.global.name }}
+  name: {{ .Values.global.name }}
+  namespace: {{ index .Values.global.clusterNamespace .Values.global.env }}
+spec:
+  revisionHistoryLimit: 10
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Values.global.name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.name }}
+    spec:
+      containers:
+      - env:
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: tomcat-configuration
+              key: logLevel
+        - name: SSL_KEY_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: tomcat-configuration
+              key: sslKeyPath
+        - name: SSL_CERT_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: tomcat-configuration
+              key: sslCertPath
+        - name: ROOT_CERT
+          valueFrom:
+            secretKeyRef:
+              name: tomcat-certificates-credentials
+              key: root_cert
+        - name: TLS_CERT
+          valueFrom:
+            secretKeyRef:
+              name: tomcat-certificates-credentials
+              key: tls_cert
+        - name: TLS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tomcat-certificates-credentials
+              key: tls_key
+        image: {{ index .Values.global.registryHostName .Values.global.env }}/{{ index .Values.global.registryNamespace .Values.global.env }}/{{ index .Values.global.imageName .Values.global.env }}:{{ .Values.global.tag | default "dummy"  }}
+        imagePullPolicy: IfNotPresent
+        name: tomcat
+        ports:
+        - containerPort: 80
+          hostPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: secrets
+          mountPath: {{ .Values.global.certificateSecretMountPath }}
+          readOnly: true
+      volumes:
+      - name: secrets
+        secret:
+          secretName: tomcat-certificates-credentials

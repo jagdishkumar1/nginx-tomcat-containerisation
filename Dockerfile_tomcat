@@ -1,0 +1,14 @@
+FROM tomcat:8.5.4-jre8
+
+MAINTAINER Jagdish Kumar
+
+RUN apt-get update
+
+COPY ssl.conf /etc/nginx/conf.d/ssl.conf
+COPY ca.pem /etc/nginx/ssl/ca.pem
+COPY key.pem /etc/nginx/ssl/key.pem
+COPY cert.pem /etc/nginx/ssl/cert.pem
+
+COPY  hello-world.war /usr/local/tomcat/webapps/hello-world.war
+
+EXPOSE 8080
